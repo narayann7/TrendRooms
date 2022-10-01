@@ -1,13 +1,15 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
-const root = document.getElementById("root");
-ReactDOM.render(
+import AppThemeProvider from "./theme/AppThemeProvider";
+const root = ReactDOM.createRoot(document.querySelector("#root"));
+root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+      <AppThemeProvider>
+        <App />
+      </AppThemeProvider>
     </BrowserRouter>
-  </React.StrictMode>,
-  root
+  </React.StrictMode>
 );
