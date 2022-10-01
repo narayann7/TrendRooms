@@ -1,19 +1,25 @@
 import React from "react";
-import { Box } from "@mui/system";
+import common_components from "../components/CommonComponents";
+import { Box, TextField, InputBase } from "@mui/material";
+import Welcome from "./../components/Welcome";
 import {
   base_box,
   auth_center_box,
-  bg,
-  center_row,
   center_column,
+  bg,
+  textfield_style,
 } from "../theme/CommonStyles";
-import common_components from "../components/CommonComponents";
-import { FcGoogle } from "react-icons/fc";
-import { BsGithub } from "react-icons/bs";
-import { FaLinkedin } from "react-icons/fa";
 import Spacer from "../components/Spacer";
-
+import AskName from "../components/AskName";
+import { FaPlus } from "react-icons/fa";
+import app_images from "./../assets/exportImage";
 function AuthPage() {
+  function captureImage(e) {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = function () {};
+  }
   return (
     <Box>
       <Box
@@ -22,53 +28,56 @@ function AuthPage() {
           ...bg,
         }}
       ></Box>
-      <Box
-        sx={{
-          ...base_box,
-        }}
-      >
+      <Box sx={base_box}>
         <Box sx={auth_center_box}>
-          <Text variant="h4">Welcome ✨ </Text>
+          <Text variant="h6"> Okay 🥺 please select a Pic! </Text>
           <Spacer height={20} />
-          <AppButton
-            startIcon={
-              <FcGoogle
+
+          {/* <Box
+            sx={{
+              ...center_column,
+              height: "100px",
+              width: "100px",
+              backgroundColor: "white",
+              borderRadius: "50%",
+            }}
+          >
+            <FaPlus
+              style={{
+                fontSize: "35px",
+                color: "black",
+              }}
+            />
+          </Box> */}
+          <div>
+            <input
+              onChange={captureImage}
+              id="avatarInput"
+              type="file"
+              style={{ display: "none" }}
+            />
+            <label
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+
+                height: "100px",
+                width: "100px",
+                backgroundColor: "white",
+                borderRadius: "50%",
+                cursor: "pointer",
+              }}
+              htmlFor="avatarInput"
+            >
+              <FaPlus
                 style={{
-                  fontSize: "30px",
-                  marginRight: "10px",
+                  fontSize: "35px",
+                  color: "black",
                 }}
               />
-            }
-          >
-            <Text>continue with Google </Text>
-          </AppButton>{" "}
-          <Spacer height={10} />
-          <AppButton
-            startIcon={
-              <BsGithub
-                style={{
-                  fontSize: "30px",
-                  marginRight: "10px",
-                  color: "white",
-                }}
-              />
-            }
-          >
-            <Text>continue with GitHub</Text>
-          </AppButton>
-          <Spacer height={10} />
-          <AppButton
-            startIcon={
-              <FaLinkedin
-                style={{
-                  fontSize: "30px",
-                  color: "#0078d4",
-                }}
-              />
-            }
-          >
-            <Text>continue with Linkedin</Text>
-          </AppButton>
+            </label>
+          </div>
         </Box>
       </Box>
     </Box>

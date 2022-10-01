@@ -31,16 +31,44 @@ const base_box = {
 
 const auth_center_box = {
   ...center_column,
-  height: "50vh",
-  width: "30vw",
+  height: "335px",
+  width: "442px",
   background: "#060608",
   borderRadius: "10px",
   minHeight: "335px",
+  maxHeight: "335px",
   minWidth: "442px",
+  maxWidth: "442px",
+};
+
+const textfield_style = {
+  ...center_row,
+  backgroundColor: "#212123",
+  height: "45px",
+  width: "300px",
+  paddingLeft: "30px",
+  paddingRight: "30px",
+
+  margin: "10px",
+  borderRadius: "10px",
 };
 
 const test = {
   background: "red",
 };
 
-export { center_row, bg, center_column, base_box, test, auth_center_box };
+const app_button_2 = {
+  width: "110px",
+  height: "35px",
+};
+
+export {
+  center_row,
+  bg,
+  center_column,
+  base_box,
+  app_button_2,
+  test,
+  auth_center_box,
+  textfield_style,
+};

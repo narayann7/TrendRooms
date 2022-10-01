@@ -16,7 +16,6 @@ const AppButton = styled(Button)(({ theme }) => ({
   textTransform: "none",
   outline: "none",
   border: "0.1px solid #212123",
-
   borderRadius: "10px",
   "&:hover": {
     border: "0.1px solid white",
