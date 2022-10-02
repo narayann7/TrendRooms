@@ -2,7 +2,7 @@ import { createTheme } from "@mui/material/styles";
 const AppTheme = createTheme({
   palette: {
     primary: {
-      main: "#808080",
+      main: "#212123",
     },
   },
   typography: {

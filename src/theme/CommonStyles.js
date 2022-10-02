@@ -64,9 +64,25 @@ const selectAvatarLable = {
   alignItems: "center",
   height: "100px",
   width: "100px",
-  backgroundColor: "white",
+  backgroundColor: "#212123",
   borderRadius: "50%",
   cursor: "pointer",
+};
+
+const back_button = {
+  ...center_row,
+  position: "absolute",
+  top: "15px",
+  border: "0.1px solid #212123",
+  borderRadius: "10px",
+  backgroundColor: "#212123",
+  left: "15px",
+  width: "40px",
+  height: "40px",
+  "&:hover": {
+    border: "0.1px solid white",
+    backgroundColor: "#060608",
+  },
 };
 
 const test = {
@@ -75,6 +91,7 @@ const test = {
 export {
   center_row,
   bg,
+  back_button,
   selectAvatarLable,
   center_column,
   base_box,

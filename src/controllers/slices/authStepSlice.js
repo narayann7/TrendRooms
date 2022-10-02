@@ -9,10 +9,18 @@ export const authStepSlice = createSlice({
   initialState,
   reducers: {
     nextStep: (state) => {
-      state.authStep += 1;
+      var index = state.authStepindex;
+      if (index + 1 !== 5) {
+        index += 1;
+      }
+      state.authStepindex = index;
     },
     previousStep: (state) => {
-      state.authStep -= 1;
+      var index = state.authStepindex;
+      if (index - 1 !== 0) {
+        index -= 1;
+      }
+      state.authStepindex = index;
     },
   },
 });

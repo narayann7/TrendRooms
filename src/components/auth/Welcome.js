@@ -6,12 +6,22 @@ import Spacer from "../Spacer";
 import { FcGoogle } from "react-icons/fc";
 import { BsGithub } from "react-icons/bs";
 import { FaLinkedin } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import {
+  nextStep,
+  previousStep,
+} from "./../../controllers/slices/authStepSlice";
+
 function Welcome() {
+  const dispatch = useDispatch();
   return (
     <Box sx={center_column}>
       <Text variant="h4">Welcome ✨ </Text>
       <Spacer height={30} />
       <AppButton
+        onClick={() => {
+          dispatch(nextStep());
+        }}
         startIcon={
           <FcGoogle
             style={{
@@ -25,6 +35,9 @@ function Welcome() {
       </AppButton>
       <Spacer height={10} />
       <AppButton
+        onClick={() => {
+          dispatch(nextStep());
+        }}
         startIcon={
           <BsGithub
             style={{
@@ -37,8 +50,12 @@ function Welcome() {
       >
         <Text>continue with GitHub</Text>
       </AppButton>
+
       <Spacer height={10} />
       <AppButton
+        onClick={() => {
+          dispatch(nextStep());
+        }}
         startIcon={
           <FaLinkedin
             style={{
