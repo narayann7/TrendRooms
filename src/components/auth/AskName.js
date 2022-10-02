@@ -1,12 +1,12 @@
 import React from "react";
-import common_components from "./CommonComponents";
 import { Box, InputBase } from "@mui/material";
+import common_components from "../CommonComponents";
 import {
   center_column,
   textfield_style,
   app_button_2,
-} from "../theme/CommonStyles";
-import Spacer from "./Spacer";
+} from "./../../theme/CommonStyles";
+import Spacer from "../Spacer";
 import { RiArrowRightSLine } from "react-icons/ri";
 function AskName() {
   return (

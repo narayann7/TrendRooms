@@ -1,8 +1,12 @@
 import React from "react";
-import common_components from "../components/CommonComponents";
 import { Box } from "@mui/material";
-import { app_button_2, textfield_style } from "../theme/CommonStyles";
-import Spacer from "../components/Spacer";
+import common_components from "../CommonComponents";
+import {
+  app_button_2,
+  center_column,
+  selectAvatarLable,
+} from "./../../theme/CommonStyles";
+import Spacer from "../Spacer";
 import { FaPlus } from "react-icons/fa";
 import { RiArrowRightSLine } from "react-icons/ri";
 
@@ -14,8 +18,7 @@ function SelectAvatar() {
     reader.onloadend = function () {};
   }
   return (
-    <Box sx={textfield_style}>
-      {" "}
+    <Box sx={center_column}>
       <Text variant="h6"> Okay 🥺 please select a Pic! </Text>
       <Spacer height={20} />
       <div>
@@ -25,20 +28,7 @@ function SelectAvatar() {
           type="file"
           style={{ display: "none" }}
         />
-        <label
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-
-            height: "100px",
-            width: "100px",
-            backgroundColor: "white",
-            borderRadius: "50%",
-            cursor: "pointer",
-          }}
-          htmlFor="avatarInput"
-        >
+        <label style={selectAvatarLable} htmlFor="avatarInput">
           <FaPlus
             style={{
               fontSize: "35px",
