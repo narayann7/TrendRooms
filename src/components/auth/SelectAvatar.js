@@ -10,10 +10,8 @@ import Spacer from "../Spacer";
 import { FaPlus } from "react-icons/fa";
 import { RiArrowRightSLine } from "react-icons/ri";
 import { useDispatch } from "react-redux";
-import {
-  nextStep,
-  previousStep,
-} from "./../../controllers/slices/authStepSlice";
+import { nextStep } from "./../../controllers/slices/authStepSlice";
+
 function SelectAvatar() {
   const dispatch = useDispatch();
 
