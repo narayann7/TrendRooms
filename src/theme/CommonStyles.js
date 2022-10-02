@@ -14,7 +14,7 @@ const center_column = {
 
 const bg = {
   backgroundImage: `url(${app_images.appbg})`,
-  opacity: "0.25",
+  opacity: "0.12 ",
 };
 
 const base_box = {
