@@ -9,8 +9,14 @@ import {
 import Spacer from "../Spacer";
 import { FaPlus } from "react-icons/fa";
 import { RiArrowRightSLine } from "react-icons/ri";
-
+import { useDispatch } from "react-redux";
+import {
+  nextStep,
+  previousStep,
+} from "./../../controllers/slices/authStepSlice";
 function SelectAvatar() {
+  const dispatch = useDispatch();
+
   function captureImage(e) {
     const file = e.target.files[0];
     const reader = new FileReader();
@@ -32,13 +38,16 @@ function SelectAvatar() {
           <FaPlus
             style={{
               fontSize: "35px",
-              color: "black",
+              color: "white",
             }}
           />
         </label>
       </div>
       <Spacer height={30} />
       <AppButton
+        onClick={() => {
+          dispatch(nextStep());
+        }}
         sx={app_button_2}
         endIcon={<RiArrowRightSLine color="white" />}
       >

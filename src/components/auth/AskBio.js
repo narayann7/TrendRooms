@@ -1,5 +1,4 @@
 import React from "react";
-
 import { Box, InputBase } from "@mui/material";
 import Spacer from "../Spacer";
 import common_components from "../CommonComponents";
@@ -9,7 +8,15 @@ import {
   app_button_2,
 } from "./../../theme/CommonStyles";
 import { RiArrowRightSLine } from "react-icons/ri";
+import { useDispatch } from "react-redux";
+import {
+  nextStep,
+  previousStep,
+} from "./../../controllers/slices/authStepSlice";
+
 function AskBio() {
+  const dispatch = useDispatch();
+
   return (
     <Box sx={center_column}>
       <Text variant="h6">Tell me about yourself 💭 </Text>
@@ -32,6 +39,9 @@ function AskBio() {
       </Box>
       <Spacer height={10} />
       <AppButton
+        onClick={() => {
+          dispatch(nextStep());
+        }}
         sx={app_button_2}
         endIcon={<RiArrowRightSLine color="white" />}
       >

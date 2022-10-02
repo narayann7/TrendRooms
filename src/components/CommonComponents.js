@@ -9,7 +9,6 @@ const AppButton = styled(Button)(({ theme }) => ({
   backgroundColor: "#212123",
   width: "245px",
   paddingLeft: "15px",
-
   paddingTop: "10px",
   paddingBottom: "10px",
   paddingRight: "15px",
@@ -19,7 +18,7 @@ const AppButton = styled(Button)(({ theme }) => ({
   borderRadius: "10px",
   "&:hover": {
     border: "0.1px solid white",
-    backgroundColor: "#161616",
+    backgroundColor: "#060608",
   },
   ".MuiTouchRipple-child": {
     backgroundColor: theme.palette.grey[100],

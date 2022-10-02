@@ -8,7 +8,14 @@ import {
 } from "./../../theme/CommonStyles";
 import Spacer from "../Spacer";
 import { RiArrowRightSLine } from "react-icons/ri";
+import { useDispatch } from "react-redux";
+import {
+  nextStep,
+  previousStep,
+} from "./../../controllers/slices/authStepSlice";
 function AskName() {
+  const dispatch = useDispatch();
+
   return (
     <Box sx={center_column}>
       <Text variant="h6">🤔 What's your full name? </Text>
@@ -24,6 +31,9 @@ function AskName() {
       </Box>
       <Spacer height={10} />
       <AppButton
+        onClick={() => {
+          dispatch(nextStep());
+        }}
         sx={app_button_2}
         endIcon={<RiArrowRightSLine color="white" />}
       >
