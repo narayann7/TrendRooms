@@ -53,18 +53,29 @@ const textfield_style = {
   borderRadius: "10px",
 };
 
-const test = {
-  background: "red",
-};
-
 const app_button_2 = {
   width: "110px",
   height: "35px",
 };
 
+const selectAvatarLable = {
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  height: "100px",
+  width: "100px",
+  backgroundColor: "white",
+  borderRadius: "50%",
+  cursor: "pointer",
+};
+
+const test = {
+  background: "red",
+};
 export {
   center_row,
   bg,
+  selectAvatarLable,
   center_column,
   base_box,
   app_button_2,

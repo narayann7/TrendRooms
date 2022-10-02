@@ -1,11 +1,11 @@
 import React from "react";
 import { Box } from "@mui/system";
-import { center_column } from "../../theme/CommonStyles";
 import common_components from "../CommonComponents";
+import { center_column } from "./../../theme/CommonStyles";
+import Spacer from "../Spacer";
 import { FcGoogle } from "react-icons/fc";
 import { BsGithub } from "react-icons/bs";
 import { FaLinkedin } from "react-icons/fa";
-import Spacer from "../Spacer";
 function Welcome() {
   return (
     <Box sx={center_column}>

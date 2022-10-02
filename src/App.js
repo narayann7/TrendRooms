@@ -1,12 +1,11 @@
 import React from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
+import ProtectedRoute from "./components/ProtectedRoute";
 import HomePage from "./pages/HomePage";
 import AuthPage from "./pages/AuthPage";
-import Test from "./pages/Test";
 import ErrorPage from "./pages/ErrorPage";
-
+import Test from "./pages/Test";
 import "./App.css";
-import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
