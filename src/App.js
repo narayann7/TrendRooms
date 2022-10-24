@@ -11,10 +11,11 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Navigate to="auth" />} />
+      <Route path="test" element={<Test />} />
+
       <Route path="auth" element={<AuthPage />} />
       <Route element={<ProtectedRoute />}>
         <Route path="home" element={<HomePage />} />
-        <Route path="test" element={<Test />} />
       </Route>
       <Route path="*" element={<ErrorPage />} />
     </Routes>
