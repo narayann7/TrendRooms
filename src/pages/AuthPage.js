@@ -1,6 +1,5 @@
-import React from "react";
-import common_components from "../components/CommonComponents";
-import { Box, Snackbar, CircularProgress } from "@mui/material";
+import React, { useEffect } from "react";
+import { Box } from "@mui/material";
 import {
   base_box,
   center_row,
@@ -11,11 +10,13 @@ import {
 import Welcome from "./../components/auth/Welcome";
 import AskName from "./../components/auth/AskName";
 import SelectAvatar from "./../components/auth/SelectAvatar";
+import ToastLoader from "./../components/ToastLoader";
 import AskBio from "./../components/auth/AskBio";
+import { useSearchParams } from "react-router-dom";
+
 import { useSelector, useDispatch } from "react-redux";
 import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
-import { previousStep } from "./../controllers/slices/authStepSlice";
-import Spacer from "./../components/Spacer";
+import { previousStep, nextStep } from "./../controllers/slices/authStepSlice";
 function AuthPage() {
   const authStepsHash = {
     1: <Welcome />,
@@ -27,12 +28,22 @@ function AuthPage() {
     (state) => state.authStepReducer.authStepindex
   );
   const dispatch = useDispatch();
-  const { isLoading, loaderTitle } = useSelector((state) => {
-    return {
-      isLoading: state.toastLoaderReducer.isLoading,
-      loaderTitle: state.toastLoaderReducer.title,
-    };
-  });
+  const [searchParams] = useSearchParams();
+  useEffect(() => {
+    let authType = searchParams.get("authType");
+    console.log(authType);
+
+    if (authType === "signup") {
+      dispatch(nextStep());
+    } else {
+      let refreshtoken = searchParams.get("token");
+      if (refreshtoken) {
+        localStorage.setItem("refreshtoken", refreshtoken);
+        console.log(refreshtoken);
+        //get user data
+      }
+    }
+  }, []);
   return (
     <Box>
       <Box
@@ -71,6 +82,7 @@ function AuthPage() {
             {[2, 3, 4].map((index) => {
               return (
                 <Box
+                  key={index}
                   sx={{
                     height: "6px",
                     width: "6px",
@@ -86,49 +98,9 @@ function AuthPage() {
           </Box>
         </Box>
       </Box>
-      <ToastLoader isLoading={isLoading} loaderTitle={loaderTitle} />
+      <ToastLoader />
     </Box>
   );
 }
 
-function ToastLoader({ isLoading, loaderTitle }) {
-  return (
-    <Snackbar
-      open={isLoading}
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-      anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-      tabIndex
-    >
-      <Box
-        sx={{
-          backgroundColor: "#212123",
-          display: "flex",
-          paddingLeft: "1.2rem",
-          paddingRight: "0.3rem",
-          paddingTop: "0.3rem",
-          paddingBottom: "0.3rem",
-          justifyContent: "space-around",
-          alignItems: "center",
-          flexDirection: "row",
-          outline: "none",
-          borderRadius: "5px",
-        }}
-      >
-        <Text>{loaderTitle}</Text>
-        <Spacer width={20} />
-        <CircularProgress
-          size={20}
-          sx={{ color: "white", marginRight: "10px" }}
-        />
-      </Box>
-    </Snackbar>
-  );
-}
-
 export default AuthPage;
-const Text = common_components.Text;
-const AppButton = common_components.AppButton;

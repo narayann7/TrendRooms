@@ -6,7 +6,6 @@ import Spacer from "../Spacer";
 import { FcGoogle } from "react-icons/fc";
 import { BsGithub } from "react-icons/bs";
 import { FaLinkedin } from "react-icons/fa";
-import { Button, Snackbar, Alert, CircularProgress } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import {
   hideLoader,
@@ -20,7 +19,7 @@ import {
 
 function Welcome() {
   const dispatch = useDispatch();
-  const { isLoading, loaderTitle } = useSelector((state) => {
+  const { isLoading } = useSelector((state) => {
     return {
       isLoading: state.toastLoaderReducer.isLoading,
       loaderTitle: state.toastLoaderReducer.title,
@@ -77,13 +76,13 @@ function Welcome() {
       <Spacer height={10} />
       <AppButton
         onClick={() => {
-          dispatch(setTitle("Signing in with LinkedIn"));
-          if (isLoading) {
-            dispatch(hideLoader());
-          } else {
-            dispatch(showLoader());
-          }
-          // dispatch(nextStep());
+          // dispatch(setTitle("Signing in with LinkedIn"));
+          // if (isLoading) {
+          //   dispatch(hideLoader());
+          // } else {
+          //   dispatch(showLoader());
+          // }
+          dispatch(nextStep());
         }}
         startIcon={
           <FaLinkedin
