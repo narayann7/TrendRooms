@@ -1,6 +1,6 @@
 import React from "react";
 import common_components from "../components/CommonComponents";
-import { Box } from "@mui/material";
+import { Box, Snackbar, CircularProgress } from "@mui/material";
 import {
   base_box,
   center_row,
@@ -15,6 +15,7 @@ import AskBio from "./../components/auth/AskBio";
 import { useSelector, useDispatch } from "react-redux";
 import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
 import { previousStep } from "./../controllers/slices/authStepSlice";
+import Spacer from "./../components/Spacer";
 function AuthPage() {
   const authStepsHash = {
     1: <Welcome />,
@@ -26,7 +27,12 @@ function AuthPage() {
     (state) => state.authStepReducer.authStepindex
   );
   const dispatch = useDispatch();
-
+  const { isLoading, loaderTitle } = useSelector((state) => {
+    return {
+      isLoading: state.toastLoaderReducer.isLoading,
+      loaderTitle: state.toastLoaderReducer.title,
+    };
+  });
   return (
     <Box>
       <Box
@@ -80,7 +86,46 @@ function AuthPage() {
           </Box>
         </Box>
       </Box>
+      <ToastLoader isLoading={isLoading} loaderTitle={loaderTitle} />
     </Box>
+  );
+}
+
+function ToastLoader({ isLoading, loaderTitle }) {
+  return (
+    <Snackbar
+      open={isLoading}
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+      anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+      tabIndex
+    >
+      <Box
+        sx={{
+          backgroundColor: "#212123",
+          display: "flex",
+          paddingLeft: "1.2rem",
+          paddingRight: "0.3rem",
+          paddingTop: "0.3rem",
+          paddingBottom: "0.3rem",
+          justifyContent: "space-around",
+          alignItems: "center",
+          flexDirection: "row",
+          outline: "none",
+          borderRadius: "5px",
+        }}
+      >
+        <Text>{loaderTitle}</Text>
+        <Spacer width={20} />
+        <CircularProgress
+          size={20}
+          sx={{ color: "white", marginRight: "10px" }}
+        />
+      </Box>
+    </Snackbar>
   );
 }
 
