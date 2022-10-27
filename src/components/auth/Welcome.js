@@ -16,6 +16,9 @@ import {
   nextStep,
   previousStep,
 } from "./../../controllers/slices/authStepSlice";
+import Urls from "../../services/urls";
+import axiosClient from "./../../services/axios_client";
+import LocalStorage from "./../../services/local_storage";
 
 function Welcome() {
   const dispatch = useDispatch();
@@ -31,12 +34,7 @@ function Welcome() {
       <Spacer height={30} />
       <AppButton
         onClick={() => {
-          dispatch(setTitle("Signing in with Google"));
-          if (isLoading) {
-            dispatch(hideLoader());
-          } else {
-            dispatch(showLoader());
-          }
+          window.location.href = Urls.loginWithGoogleUrl;
         }}
         startIcon={
           <FcGoogle
@@ -52,12 +50,24 @@ function Welcome() {
       <Spacer height={10} />
       <AppButton
         onClick={() => {
-          dispatch(setTitle("Signing in with Github"));
-          if (isLoading) {
-            dispatch(hideLoader());
-          } else {
-            dispatch(showLoader());
-          }
+          // console.log("token", axiosClient.defaults.headers);
+          var token = LocalStorage.getRefreshToken();
+          axiosClient.defaults.headers = {
+            Authorization: `Bearer ${token}`,
+          };
+          axiosClient.get(Urls.getUser).then((res) => {
+            console.log("res", res.data);
+          });
+
+          // var refreshToken = localStorage.getItem("refreshToken");
+          // console.log("refreshToken", refreshToken);
+
+          // dispatch(setTitle("Signing in with Github"));
+          // if (isLoading) {
+          //   dispatch(hideLoader());
+          // } else {
+          //   dispatch(showLoader());
+          // }
           // dispatch(nextStep());
         }}
         startIcon={

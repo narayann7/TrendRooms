@@ -17,6 +17,7 @@ import { useSearchParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
 import { previousStep, nextStep } from "./../controllers/slices/authStepSlice";
+import LocalStorage from "../services/local_storage";
 function AuthPage() {
   const authStepsHash = {
     1: <Welcome />,
@@ -28,22 +29,25 @@ function AuthPage() {
     (state) => state.authStepReducer.authStepindex
   );
   const dispatch = useDispatch();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   useEffect(() => {
     let authType = searchParams.get("authType");
-    console.log(authType);
-
+    let refreshToken = searchParams.get("token");
+    LocalStorage.setRefreshToken(refreshToken);
+    searchParams.delete("authType");
+    searchParams.delete("token");
     if (authType === "signup") {
       dispatch(nextStep());
     } else {
-      let refreshtoken = searchParams.get("token");
-      if (refreshtoken) {
-        localStorage.setItem("refreshtoken", refreshtoken);
-        console.log(refreshtoken);
+      if (refreshToken) {
+        localStorage.setItem("refreshToken", refreshToken);
+        console.log("refreshtoken", refreshToken);
         //get user data
       }
     }
-  }, []);
+
+    // return () => setSearchParams(searchParams);
+  }, [dispatch, searchParams, setSearchParams]);
   return (
     <Box>
       <Box
@@ -65,7 +69,7 @@ function AuthPage() {
             }}
             sx={{
               ...back_button,
-              display: authStepIndex === 1 ? "none" : "flex",
+              display: authStepIndex <= 2 ? "none" : "flex",
             }}
           >
             <MdOutlineKeyboardArrowLeft size={25} />
