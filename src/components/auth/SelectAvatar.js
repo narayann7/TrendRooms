@@ -23,7 +23,7 @@ function SelectAvatar() {
   }
   return (
     <Box sx={center_column}>
-      <Text variant="h6"> Okay 🥺 please select a Pic! </Text>
+      <Text variant="h6"> Okay 🥺 please select a Pic </Text>
       <Spacer height={20} />
       <div>
         <input

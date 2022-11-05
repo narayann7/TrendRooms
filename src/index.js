@@ -10,13 +10,11 @@ import App from "./App";
 const root = ReactDOM.createRoot(document.querySelector("#root"));
 
 root.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <Provider store={store}>
-        <ThemeProvider theme={AppTheme}>
-          <App />
-        </ThemeProvider>
-      </Provider>
-    </BrowserRouter>
-  </React.StrictMode>
+  <BrowserRouter>
+    <Provider store={store}>
+      <ThemeProvider theme={AppTheme}>
+        <App />
+      </ThemeProvider>
+    </Provider>
+  </BrowserRouter>
 );

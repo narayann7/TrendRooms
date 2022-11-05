@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, InputBase } from "@mui/material";
 import common_components from "../CommonComponents";
 import {
@@ -16,6 +16,7 @@ import {
 function AskName() {
   const dispatch = useDispatch();
 
+  useEffect(() => {}, []);
   return (
     <Box sx={center_column}>
       <Text variant="h6">🤔 What's your full name? </Text>

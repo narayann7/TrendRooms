@@ -17,7 +17,7 @@ export const authStepSlice = createSlice({
     },
     previousStep: (state) => {
       var index = state.authStepindex;
-      if (index - 1 !== 0) {
+      if (index - 1 !== 1) {
         index -= 1;
       }
       state.authStepindex = index;

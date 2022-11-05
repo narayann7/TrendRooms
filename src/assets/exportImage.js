@@ -1,4 +1,4 @@
-import appbg from "./images/appbg.png";
+import appbg from "./images/mainbg.png";
 
 const app_images = {
   appbg,

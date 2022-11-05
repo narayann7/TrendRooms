@@ -6,21 +6,35 @@ import Spacer from "../Spacer";
 import { FcGoogle } from "react-icons/fc";
 import { BsGithub } from "react-icons/bs";
 import { FaLinkedin } from "react-icons/fa";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  hideLoader,
+  showLoader,
+  setTitle,
+} from "./../../controllers/slices/loaderSlice";
 import {
   nextStep,
   previousStep,
 } from "./../../controllers/slices/authStepSlice";
+import Urls from "../../services/urls";
+import axiosClient from "./../../services/axios_client";
+import LocalStorage from "./../../services/local_storage";
 
 function Welcome() {
   const dispatch = useDispatch();
+  const { isLoading } = useSelector((state) => {
+    return {
+      isLoading: state.toastLoaderReducer.isLoading,
+      loaderTitle: state.toastLoaderReducer.title,
+    };
+  });
   return (
     <Box sx={center_column}>
       <Text variant="h4">Welcome ✨ </Text>
       <Spacer height={30} />
       <AppButton
         onClick={() => {
-          dispatch(nextStep());
+          window.location.href = Urls.loginWithGoogleUrl;
         }}
         startIcon={
           <FcGoogle
@@ -36,7 +50,25 @@ function Welcome() {
       <Spacer height={10} />
       <AppButton
         onClick={() => {
-          dispatch(nextStep());
+          // console.log("token", axiosClient.defaults.headers);
+          var token = LocalStorage.getRefreshToken();
+          axiosClient.defaults.headers = {
+            Authorization: `Bearer ${token}`,
+          };
+          axiosClient.get(Urls.getUser).then((res) => {
+            console.log("res", res.data);
+          });
+
+          // var refreshToken = localStorage.getItem("refreshToken");
+          // console.log("refreshToken", refreshToken);
+
+          // dispatch(setTitle("Signing in with Github"));
+          // if (isLoading) {
+          //   dispatch(hideLoader());
+          // } else {
+          //   dispatch(showLoader());
+          // }
+          // dispatch(nextStep());
         }}
         startIcon={
           <BsGithub
@@ -54,6 +86,12 @@ function Welcome() {
       <Spacer height={10} />
       <AppButton
         onClick={() => {
+          // dispatch(setTitle("Signing in with LinkedIn"));
+          // if (isLoading) {
+          //   dispatch(hideLoader());
+          // } else {
+          //   dispatch(showLoader());
+          // }
           dispatch(nextStep());
         }}
         startIcon={
