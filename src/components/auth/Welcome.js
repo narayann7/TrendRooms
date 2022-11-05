@@ -11,7 +11,7 @@ import {
   hideLoader,
   showLoader,
   setTitle,
-} from "./../../controllers/slices/loaderSlice";
+} from "./../../controllers/slices/snackbarSlice";
 import {
   nextStep,
   previousStep,
@@ -24,8 +24,8 @@ function Welcome() {
   const dispatch = useDispatch();
   const { isLoading } = useSelector((state) => {
     return {
-      isLoading: state.toastLoaderReducer.isLoading,
-      loaderTitle: state.toastLoaderReducer.title,
+      isLoading: state.snackbarReducer.isLoading,
+      loaderTitle: state.snackbarReducer.title,
     };
   });
   return (

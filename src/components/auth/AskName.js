@@ -19,7 +19,7 @@ function AskName() {
   useEffect(() => {}, []);
   return (
     <Box sx={center_column}>
-      <Text variant="h6">🤔 What's your full name? </Text>
+      <Text variant="h6">🤔 What's your name? </Text>
       <Spacer height={10} />
       <Box sx={textfield_style}>
         <InputBase

@@ -10,19 +10,18 @@ import {
 import Welcome from "./../components/auth/Welcome";
 import AskName from "./../components/auth/AskName";
 import SelectAvatar from "./../components/auth/SelectAvatar";
-import ToastLoader from "./../components/ToastLoader";
+import AppSnackbar from "../components/AppSnackbar";
 import AskBio from "./../components/auth/AskBio";
 import { useSearchParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
 import { previousStep, nextStep } from "./../controllers/slices/authStepSlice";
-import { setUser } from "./../controllers/slices/userSlice";
 import {
   setTitle,
   hideLoader,
   showLoader,
-} from "./../controllers/slices/loaderSlice";
+} from "./../controllers/slices/snackbarSlice";
 import LocalStorage from "../services/local_storage";
 import axiosClient from "./../services/axios_client";
 import Urls from "./../services/urls";
@@ -78,8 +77,7 @@ function AuthPage() {
             dispatch(hideLoader());
             //setting the user data in local storage
             LocalStorage.setUserData(res.data.user);
-            //setting the user data in the redux store
-            dispatch(setUser(res.data.user));
+
             navigate("/home");
           } else {
             console.log("error", res);
@@ -144,7 +142,7 @@ function AuthPage() {
           </Box>
         </Box>
       </Box>
-      <ToastLoader />
+      <AppSnackbar />
     </Box>
   );
 }

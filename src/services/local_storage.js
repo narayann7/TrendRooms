@@ -22,6 +22,10 @@ class LocalStorage {
     var decodedData = CommonServices.Base64Decode(data);
     return JSON.parse(decodedData);
   }
+
+  static deleteAll() {
+    localStorage.clear();
+  }
 }
 
 export default LocalStorage;
