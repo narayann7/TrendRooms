@@ -50,25 +50,7 @@ function Welcome() {
       <Spacer height={10} />
       <AppButton
         onClick={() => {
-          // console.log("token", axiosClient.defaults.headers);
-          var token = LocalStorage.getRefreshToken();
-          axiosClient.defaults.headers = {
-            Authorization: `Bearer ${token}`,
-          };
-          axiosClient.get(Urls.getUser).then((res) => {
-            console.log("res", res.data);
-          });
-
-          // var refreshToken = localStorage.getItem("refreshToken");
-          // console.log("refreshToken", refreshToken);
-
-          // dispatch(setTitle("Signing in with Github"));
-          // if (isLoading) {
-          //   dispatch(hideLoader());
-          // } else {
-          //   dispatch(showLoader());
-          // }
-          // dispatch(nextStep());
+          window.location.href = Urls.loginWithGithubUrl;
         }}
         startIcon={
           <BsGithub
@@ -86,13 +68,7 @@ function Welcome() {
       <Spacer height={10} />
       <AppButton
         onClick={() => {
-          // dispatch(setTitle("Signing in with LinkedIn"));
-          // if (isLoading) {
-          //   dispatch(hideLoader());
-          // } else {
-          //   dispatch(showLoader());
-          // }
-          dispatch(nextStep());
+          window.location.href = Urls.loginWithLinkedinUrl;
         }}
         startIcon={
           <FaLinkedin

@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import LocalStorage from "../../services/local_storage";
 
 const initialState = {
   user: {},
@@ -13,8 +14,12 @@ export const userSlice = createSlice({
     deleteUser: (state) => {
       state.user = {};
     },
+    logout: (state) => {
+      state.user = {};
+      LocalStorage.deleteAll();
+    },
   },
 });
 
-export const { setUser, deleteUser } = userSlice.actions;
+export const { setUser, deleteUser, logout } = userSlice.actions;
 export default userSlice.reducer;

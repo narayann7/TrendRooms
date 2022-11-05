@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { setUser } from "../controllers/slices/userSlice";
+import { setUser, logout } from "../controllers/slices/userSlice";
 import { showSnackbar } from "../controllers/slices/snackbarSlice";
 import LocalStorage from "../services/local_storage";
 import AppSnackbar from "../components/AppSnackbar";
@@ -12,6 +12,19 @@ function HomePage() {
   const { open } = useSelector((state) => state.snackbarReducer);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const logoutOnClick = () => {
+    navigate("/auth", {
+      replace: true,
+    });
+    dispatch(logout());
+    dispatch(
+      showSnackbar({
+        message: "Logged out successfully",
+        type: "success",
+      })
+    );
+  };
 
   useEffect(() => {
     var data = LocalStorage.getUserData();
@@ -33,19 +46,7 @@ function HomePage() {
       >
         <div>{userData.email}</div>
         <Button
-          onClick={() => {
-            dispatch(
-              showSnackbar({
-                message: "hello",
-                type: "error",
-                open: "true",
-              })
-            );
-            // LocalStorage.deleteAll();
-            // navigate("/auth", {
-            //   replace: true,
-            // });
-          }}
+          onClick={logoutOnClick}
           sx={{
             color: "white",
             backgroundColor: "#212123",

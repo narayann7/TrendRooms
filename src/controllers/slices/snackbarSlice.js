@@ -28,7 +28,7 @@ export const snackbarSlice = createSlice({
     },
     //for alert
     showSnackbar: (state, action) => {
-      state.open = true ?? false;
+      state.open = true;
       state.message = action.payload.message ?? "";
       state.type = action.payload.type ?? "success";
     },
