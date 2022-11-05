@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import {
   base_box,
   center_row,
@@ -18,6 +18,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
 import { previousStep, nextStep } from "./../controllers/slices/authStepSlice";
 import LocalStorage from "../services/local_storage";
+import axiosClient from "./../services/axios_client";
+import Urls from "./../services/urls";
 function AuthPage() {
   const authStepsHash = {
     1: <Welcome />,
@@ -33,21 +35,24 @@ function AuthPage() {
   useEffect(() => {
     let authType = searchParams.get("authType");
     let refreshToken = searchParams.get("token");
-    LocalStorage.setRefreshToken(refreshToken);
-    searchParams.delete("authType");
-    searchParams.delete("token");
-    if (authType === "signup") {
-      dispatch(nextStep());
-    } else {
-      if (refreshToken) {
-        localStorage.setItem("refreshToken", refreshToken);
-        console.log("refreshtoken", refreshToken);
-        //get user data
+    if (refreshToken) {
+      LocalStorage.setRefreshToken(refreshToken);
+      searchParams.delete("authType");
+      searchParams.delete("token");
+      setSearchParams(searchParams);
+      if (authType === "signup") {
+        dispatch(nextStep());
+      } else {
+        // var token = LocalStorage.getRefreshToken();
+        // axiosClient.defaults.headers = {
+        //   Authorization: `Bearer ${token}`,
+        // };
+        // axiosClient.get(Urls.getUser).then((res) => {
+        //   console.log("res", res.data);
+        // });
       }
     }
-
-    // return () => setSearchParams(searchParams);
-  }, [dispatch, searchParams, setSearchParams]);
+  }, []);
   return (
     <Box>
       <Box

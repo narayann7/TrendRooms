@@ -6,18 +6,26 @@ import AuthPage from "./pages/AuthPage";
 import ErrorPage from "./pages/ErrorPage";
 import Test from "./pages/Test";
 import "./App.css";
+import LocalStorage from "./services/local_storage";
 
 function App() {
-  return (
-    <Routes>
-      <Route path="/" element={<Navigate to="auth" />} />
-      <Route path="test" element={<Test />} />
+  const token = LocalStorage.getRefreshToken();
 
-      <Route path="auth" element={<AuthPage />} />
+  const isDev = false;
+  return !isDev ? (
+    <Routes>
+      <Route path="/" element={<Navigate to={!token ? "auth" : "home"} />} />
+
+      <Route path="auth" element={!token ? <AuthPage /> : <HomePage />} />
       <Route element={<ProtectedRoute />}>
         <Route path="home" element={<HomePage />} />
       </Route>
       <Route path="*" element={<ErrorPage />} />
+    </Routes>
+  ) : (
+    <Routes>
+      <Route path="/*" element={<Navigate to="test" />} />
+      <Route path="/test" element={<Test />} />
     </Routes>
   );
 }

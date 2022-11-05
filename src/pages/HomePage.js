@@ -11,7 +11,7 @@ function HomePage() {
         width: "100vw",
       }}
       onClick={() => {
-        localStorage.removeItem("token");
+        localStorage.removeItem("refreshToken");
       }}
     >
       HomePage
