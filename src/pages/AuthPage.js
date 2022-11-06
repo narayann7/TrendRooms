@@ -82,38 +82,44 @@ function AuthPage() {
       dispatch(setTitle("Logging you in..."));
       dispatch(showLoader());
       //getting the user data from the server
-      axiosClient.get(Urls.user).then((res) => {
-        if (res.status === 200) {
-          //if the user data is fetched successfully
-          //then navigating to the home page
-          console.log("res", res.data.user);
-          dispatch(hideLoader());
-          //setting the user data in local storage
-          LocalStorage.setUserData(res.data.user);
-          //add in update data
-          setupdateData({
-            name: res.data.user.name,
-            bio: res.data.user.bio,
-            displayPicture: res.data.user.displayPicture,
-          });
-          dispatch(
-            showSnackbar({
-              message: "Logged in successfully",
-              type: "success",
-            })
-          );
-          dispatch(nextStep());
+      axiosClient
+        .get(Urls.user)
+        .then((res) => {
+          if (res.status === 200) {
+            //if the user data is fetched successfully
+            //then navigating to the home page
+            console.log("res", res.data.user);
+            dispatch(hideLoader());
+            //setting the user data in local storage
+            LocalStorage.setUserData(res.data.user);
+            //add in update data
+            setupdateData({
+              name: res.data.user.name,
+              bio: res.data.user.bio,
+              displayPicture: res.data.user.displayPicture,
+            });
 
-          // //checking the authType if signup or login
-          // if (authType === "signup") {
-          //   //if signup then setting the next signup step
-          //   dispatch(nextStep());
-          // }
-          // navigate("/home");
-        } else {
-          console.log("error", res);
-        }
-      });
+            //checking the authType if signup or login
+            if (authType === "signup") {
+              //if signup then setting the next signup step
+              dispatch(nextStep());
+            } else {
+              dispatch(
+                showSnackbar({
+                  message: "Logged in successfully",
+                  type: "success",
+                })
+              );
+              //if login then navigating to the home page
+              navigate("/home");
+            }
+          } else {
+            throw new Error("Something went wrong");
+          }
+        })
+        .catch((err) => {
+          console.log("error", err);
+        });
     }
   }, []);
   return (

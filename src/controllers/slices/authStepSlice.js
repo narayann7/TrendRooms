@@ -22,9 +22,12 @@ export const authStepSlice = createSlice({
       }
       state.authStepindex = index;
     },
+    makeItInitial: (state) => {
+      state.authStepindex = 1;
+    },
   },
 });
 
-export const { nextStep, previousStep } = authStepSlice.actions;
+export const { nextStep, previousStep, makeItInitial } = authStepSlice.actions;
 
 export default authStepSlice.reducer;

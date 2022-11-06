@@ -9,14 +9,20 @@ import {
 } from "./../../theme/CommonStyles";
 import { RiArrowRightSLine } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
-import { nextStep } from "./../../controllers/slices/authStepSlice";
-import { showSnackbar } from "./../../controllers/slices/snackbarSlice";
+import {
+  showSnackbar,
+  showLoader,
+  hideLoader,
+} from "./../../controllers/slices/snackbarSlice";
+import { makeItInitial } from "./../../controllers/slices/authStepSlice";
 import Urls from "../../services/urls";
 import axiosClient from "../../services/axios_client";
 import LocalStorage from "../../services/local_storage";
+import { useNavigate } from "react-router-dom";
 
 function AskBio({ updateData, setupdateData }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const onchange = (e) => {
     e.preventDefault();
     setupdateData({ ...updateData, bio: e.target.value });
@@ -28,8 +34,39 @@ function AskBio({ updateData, setupdateData }) {
     //remove extra spaces
     bio = bio.replace(/\s+/g, " ");
     setupdateData({ ...updateData, bio: bio });
-    console.log(updateData);
     if (!isLoading) {
+      var token = LocalStorage.getRefreshToken();
+      //setting the token in the axios client
+      axiosClient.defaults.headers = {
+        Authorization: `Bearer ${token}`,
+      };
+      dispatch(showLoader());
+      axiosClient
+        .put(Urls.user, {
+          name: updateData.name,
+          bio: updateData.bio,
+          displayPicture: updateData.displayPicture,
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            dispatch(hideLoader());
+            LocalStorage.setUserData(res.data.user);
+            dispatch(makeItInitial());
+            navigate("/home", {
+              replace: true,
+            });
+            console.log(res.data);
+          } else {
+            throw new Error("Something went wrong");
+          }
+        })
+        .catch((err) => {
+          dispatch(hideLoader());
+          dispatch(
+            showSnackbar({ message: "Something went wrong", type: "error" })
+          );
+          console.log("error");
+        });
     }
   };
   return (
