@@ -8,15 +8,30 @@ import {
   app_button_2,
 } from "./../../theme/CommonStyles";
 import { RiArrowRightSLine } from "react-icons/ri";
-import { useDispatch } from "react-redux";
-import {
-  nextStep,
-  previousStep,
-} from "./../../controllers/slices/authStepSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { nextStep } from "./../../controllers/slices/authStepSlice";
+import { showSnackbar } from "./../../controllers/slices/snackbarSlice";
+import Urls from "../../services/urls";
+import axiosClient from "../../services/axios_client";
+import LocalStorage from "../../services/local_storage";
 
-function AskBio() {
+function AskBio({ updateData, setupdateData }) {
   const dispatch = useDispatch();
-
+  const onchange = (e) => {
+    e.preventDefault();
+    setupdateData({ ...updateData, bio: e.target.value });
+  };
+  const { isLoading } = useSelector((state) => state.snackbarReducer);
+  const next = () => {
+    //trimming the bio
+    let bio = updateData.bio.trim();
+    //remove extra spaces
+    bio = bio.replace(/\s+/g, " ");
+    setupdateData({ ...updateData, bio: bio });
+    console.log(updateData);
+    if (!isLoading) {
+    }
+  };
   return (
     <Box sx={center_column}>
       <Text variant="h6">Tell me about yourself 💭 </Text>
@@ -28,9 +43,17 @@ function AskBio() {
         }}
       >
         <InputBase
-          multiline="true"
+          className="bio_textfield"
+          multiline={true}
           rows="4"
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              next();
+            }
+          }}
           type="text"
+          value={updateData.bio}
+          onChange={onchange}
           placeholder="enter your bio..."
           sx={{
             color: "white",
@@ -39,9 +62,8 @@ function AskBio() {
       </Box>
       <Spacer height={10} />
       <AppButton
-        onClick={() => {
-          dispatch(nextStep());
-        }}
+        className="next_button"
+        onClick={next}
         sx={app_button_2}
         endIcon={<RiArrowRightSLine color="white" />}
       >

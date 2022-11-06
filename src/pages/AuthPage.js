@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Box } from "@mui/material";
 import {
   base_box,
@@ -21,6 +21,7 @@ import {
   setTitle,
   hideLoader,
   showLoader,
+  showSnackbar,
 } from "./../controllers/slices/snackbarSlice";
 import LocalStorage from "../services/local_storage";
 import axiosClient from "./../services/axios_client";
@@ -32,12 +33,29 @@ function AuthPage() {
   const authStepIndex = useSelector(
     (state) => state.authStepReducer.authStepindex
   );
+  const [updateData, setupdateData] = useState({
+    name: "",
+    bio: "",
+    displayPicture: "",
+  });
+
+  const setupdateDataCallback = (data) => {
+    setupdateData(data);
+  };
+
   //signup steps
   const authStepsHash = {
     1: <Welcome />,
-    2: <AskName />,
-    3: <SelectAvatar />,
-    4: <AskBio />,
+    2: (
+      <AskName updateData={updateData} setupdateData={setupdateDataCallback} />
+    ),
+    3: (
+      <SelectAvatar
+        updateData={updateData}
+        setupdateData={setupdateDataCallback}
+      />
+    ),
+    4: <AskBio setupdateData={setupdateDataCallback} updateData={updateData} />,
   };
 
   useEffect(() => {
@@ -55,35 +73,47 @@ function AuthPage() {
       searchParams.delete("token");
       setSearchParams(searchParams);
 
-      //checking the authType if signup or login
-      if (authType === "signup") {
-        //if signup then setting the next signup step
-        dispatch(nextStep());
-      } else {
-        //saving the token in local storage
-        var token = LocalStorage.getRefreshToken();
-        //setting the token in the axios client
-        axiosClient.defaults.headers = {
-          Authorization: `Bearer ${token}`,
-        };
-        dispatch(setTitle("Logging you in..."));
-        dispatch(showLoader());
-        //getting the user data from the server
-        axiosClient.get(Urls.getUser).then((res) => {
-          if (res.status === 200) {
-            //if the user data is fetched successfully
-            //then navigating to the home page
-            console.log("res", res.data.user);
-            dispatch(hideLoader());
-            //setting the user data in local storage
-            LocalStorage.setUserData(res.data.user);
+      //saving the token in local storage
+      var token = LocalStorage.getRefreshToken();
+      //setting the token in the axios client
+      axiosClient.defaults.headers = {
+        Authorization: `Bearer ${token}`,
+      };
+      dispatch(setTitle("Logging you in..."));
+      dispatch(showLoader());
+      //getting the user data from the server
+      axiosClient.get(Urls.user).then((res) => {
+        if (res.status === 200) {
+          //if the user data is fetched successfully
+          //then navigating to the home page
+          console.log("res", res.data.user);
+          dispatch(hideLoader());
+          //setting the user data in local storage
+          LocalStorage.setUserData(res.data.user);
+          //add in update data
+          setupdateData({
+            name: res.data.user.name,
+            bio: res.data.user.bio,
+            displayPicture: res.data.user.displayPicture,
+          });
+          dispatch(
+            showSnackbar({
+              message: "Logged in successfully",
+              type: "success",
+            })
+          );
+          dispatch(nextStep());
 
-            navigate("/home");
-          } else {
-            console.log("error", res);
-          }
-        });
-      }
+          // //checking the authType if signup or login
+          // if (authType === "signup") {
+          //   //if signup then setting the next signup step
+          //   dispatch(nextStep());
+          // }
+          // navigate("/home");
+        } else {
+          console.log("error", res);
+        }
+      });
     }
   }, []);
   return (
@@ -102,6 +132,7 @@ function AuthPage() {
           }}
         >
           <Box
+            className="back_button"
             onClick={() => {
               dispatch(previousStep());
             }}
@@ -113,7 +144,6 @@ function AuthPage() {
             <MdOutlineKeyboardArrowLeft size={25} />
           </Box>
           {authStepsHash[authStepIndex]}
-
           <Box
             className="dots"
             sx={{

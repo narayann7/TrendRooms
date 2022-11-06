@@ -6,33 +6,15 @@ import Spacer from "../Spacer";
 import { FcGoogle } from "react-icons/fc";
 import { BsGithub } from "react-icons/bs";
 import { FaLinkedin } from "react-icons/fa";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  hideLoader,
-  showLoader,
-  setTitle,
-} from "./../../controllers/slices/snackbarSlice";
-import {
-  nextStep,
-  previousStep,
-} from "./../../controllers/slices/authStepSlice";
 import Urls from "../../services/urls";
-import axiosClient from "./../../services/axios_client";
-import LocalStorage from "./../../services/local_storage";
 
 function Welcome() {
-  const dispatch = useDispatch();
-  const { isLoading } = useSelector((state) => {
-    return {
-      isLoading: state.snackbarReducer.isLoading,
-      loaderTitle: state.snackbarReducer.title,
-    };
-  });
   return (
     <Box sx={center_column}>
       <Text variant="h4">Welcome ✨ </Text>
       <Spacer height={30} />
       <AppButton
+        className="google_button"
         onClick={() => {
           window.location.href = Urls.loginWithGoogleUrl;
         }}
@@ -49,6 +31,7 @@ function Welcome() {
       </AppButton>
       <Spacer height={10} />
       <AppButton
+        className="github_button"
         onClick={() => {
           window.location.href = Urls.loginWithGithubUrl;
         }}
@@ -64,9 +47,9 @@ function Welcome() {
       >
         <Text>continue with GitHub</Text>
       </AppButton>
-
       <Spacer height={10} />
       <AppButton
+        className="linkedin_button"
         onClick={() => {
           window.location.href = Urls.loginWithLinkedinUrl;
         }}

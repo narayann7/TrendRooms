@@ -6,6 +6,8 @@ import { setUser, logout } from "../controllers/slices/userSlice";
 import { showSnackbar } from "../controllers/slices/snackbarSlice";
 import LocalStorage from "../services/local_storage";
 import AppSnackbar from "../components/AppSnackbar";
+import axiosClient from "../services/axios_client";
+import Urls from "../services/urls";
 
 function HomePage() {
   const userData = useSelector((state) => state.userReducer.user);

@@ -12,7 +12,7 @@ import { RiArrowRightSLine } from "react-icons/ri";
 import { useDispatch } from "react-redux";
 import { nextStep } from "./../../controllers/slices/authStepSlice";
 
-function SelectAvatar() {
+function SelectAvatar({ updateData, setupdateData }) {
   const dispatch = useDispatch();
 
   function captureImage(e) {
@@ -23,30 +23,55 @@ function SelectAvatar() {
   }
   return (
     <Box sx={center_column}>
-      <Text variant="h6"> Okay 🥺 please select a Pic </Text>
+      <Text variant="h6"> Okay 🥺 please select an avatar </Text>
       <Spacer height={20} />
       <div>
-        <input
-          onChange={captureImage}
-          id="avatarInput"
-          type="file"
-          style={{ display: "none" }}
+        <img
+          referrerPolicy="no-referrer"
+          style={selectAvatarLable}
+          height={100}
+          src={updateData.displayPicture}
+          alt="error"
+          loading="lazy"
         />
-        <label style={selectAvatarLable} htmlFor="avatarInput">
-          <FaPlus
-            style={{
-              fontSize: "35px",
-              color: "white",
-            }}
-          />
-        </label>
       </div>
-      <Spacer height={30} />
+
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "end",
+          width: "100%",
+          marginLeft: "30px",
+        }}
+      >
+        <div>
+          <input
+            onChange={captureImage}
+            id="avatarInput"
+            type="file"
+            style={{ display: "none" }}
+          />
+          <label
+            style={{
+              height: "20px",
+              borderRadius: "5%",
+              backgroundColor: "#212123",
+              paddingLeft: "8px",
+              paddingRight: "8px",
+            }}
+            htmlFor="avatarInput"
+          >
+            <Text variant="h7">{"choose"}</Text>
+          </label>
+        </div>
+      </div>
+
       <AppButton
         onClick={() => {
           dispatch(nextStep());
         }}
-        sx={app_button_2}
+        sx={{ ...app_button_2 }}
         endIcon={<RiArrowRightSLine color="white" />}
       >
         <Text>Next</Text>

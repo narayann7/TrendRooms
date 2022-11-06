@@ -25,7 +25,7 @@ function AppSnackbar() {
           alignItems: "center",
         }}
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-        tabIndex
+        tabIndex={-1}
       >
         <Box
           sx={{
@@ -74,7 +74,7 @@ function AppSnackbar() {
   );
 }
 const Alert = React.forwardRef(function Alert(props, ref) {
-  return <MuiAlert t elevation={6} ref={ref} variant="filled" {...props} />;
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
 export default AppSnackbar;

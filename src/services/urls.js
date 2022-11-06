@@ -4,7 +4,7 @@ class Urls {
   static loginWithGoogleUrl = `${Urls.serverBaseUrl}/api/auth/google`;
   static loginWithGithubUrl = `${Urls.serverBaseUrl}/api/auth/github`;
   static loginWithLinkedinUrl = `${Urls.serverBaseUrl}/api/auth/linkedin`;
-  static getUser = `${Urls.serverBaseUrl}/api/user`;
+  static user = `${Urls.serverBaseUrl}/api/user`;
 }
 
 export default Urls;
