@@ -7,7 +7,6 @@ import {
   selectAvatarLable,
 } from "./../../theme/CommonStyles";
 import Spacer from "../Spacer";
-import { FaPlus } from "react-icons/fa";
 import { RiArrowRightSLine } from "react-icons/ri";
 import { useDispatch } from "react-redux";
 import { nextStep } from "./../../controllers/slices/authStepSlice";
@@ -31,7 +30,7 @@ function SelectAvatar({ updateData, setupdateData }) {
           style={selectAvatarLable}
           height={100}
           src={updateData.displayPicture}
-          alt="error"
+          alt="select avatar"
           loading="lazy"
         />
       </div>

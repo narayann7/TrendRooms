@@ -23,7 +23,7 @@ function HomePage() {
     dispatch(
       showSnackbar({
         message: "Logged out successfully",
-        type: "success",
+        type: "info",
       })
     );
   };
