@@ -8,15 +8,67 @@ import {
   app_button_2,
 } from "./../../theme/CommonStyles";
 import { RiArrowRightSLine } from "react-icons/ri";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
-  nextStep,
-  previousStep,
-} from "./../../controllers/slices/authStepSlice";
+  showSnackbar,
+  showLoader,
+  hideLoader,
+} from "./../../controllers/slices/snackbarSlice";
+import { makeItInitial } from "./../../controllers/slices/authStepSlice";
+import Urls from "../../services/urls";
+import axiosClient from "../../services/axios_client";
+import LocalStorage from "../../services/local_storage";
+import { useNavigate } from "react-router-dom";
 
-function AskBio() {
+function AskBio({ updateData, setupdateData }) {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
+  const onchange = (e) => {
+    e.preventDefault();
+    setupdateData({ ...updateData, bio: e.target.value });
+  };
+  const { isLoading } = useSelector((state) => state.snackbarReducer);
+  const next = () => {
+    //trimming the bio
+    let bio = updateData.bio.trim();
+    //remove extra spaces
+    bio = bio.replace(/\s+/g, " ");
+    setupdateData({ ...updateData, bio: bio });
+    if (!isLoading) {
+      var token = LocalStorage.getRefreshToken();
+      //setting the token in the axios client
+      axiosClient.defaults.headers = {
+        Authorization: `Bearer ${token}`,
+      };
+      dispatch(showLoader());
+      axiosClient
+        .put(Urls.user, {
+          name: updateData.name,
+          bio: updateData.bio,
+          displayPicture: updateData.displayPicture,
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            dispatch(hideLoader());
+            LocalStorage.setUserData(res.data.user);
+            dispatch(makeItInitial());
+            navigate("/home", {
+              replace: true,
+            });
+            console.log(res.data);
+          } else {
+            throw new Error("Something went wrong");
+          }
+        })
+        .catch((err) => {
+          dispatch(hideLoader());
+          dispatch(
+            showSnackbar({ message: "Something went wrong", type: "error" })
+          );
+          console.log("error");
+        });
+    }
+  };
   return (
     <Box sx={center_column}>
       <Text variant="h6">Tell me about yourself 💭 </Text>
@@ -28,9 +80,17 @@ function AskBio() {
         }}
       >
         <InputBase
-          multiline="true"
+          className="bio_textfield"
+          multiline={true}
           rows="4"
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              next();
+            }
+          }}
           type="text"
+          value={updateData.bio}
+          onChange={onchange}
           placeholder="enter your bio..."
           sx={{
             color: "white",
@@ -39,9 +99,8 @@ function AskBio() {
       </Box>
       <Spacer height={10} />
       <AppButton
-        onClick={() => {
-          dispatch(nextStep());
-        }}
+        className="next_button"
+        onClick={next}
         sx={app_button_2}
         endIcon={<RiArrowRightSLine color="white" />}
       >

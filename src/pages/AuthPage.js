@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Box } from "@mui/material";
 import {
   base_box,
@@ -10,19 +10,19 @@ import {
 import Welcome from "./../components/auth/Welcome";
 import AskName from "./../components/auth/AskName";
 import SelectAvatar from "./../components/auth/SelectAvatar";
-import ToastLoader from "./../components/ToastLoader";
+import AppSnackbar from "../components/AppSnackbar";
 import AskBio from "./../components/auth/AskBio";
 import { useSearchParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
 import { previousStep, nextStep } from "./../controllers/slices/authStepSlice";
-import { setUser } from "./../controllers/slices/userSlice";
 import {
   setTitle,
   hideLoader,
   showLoader,
-} from "./../controllers/slices/loaderSlice";
+  showSnackbar,
+} from "./../controllers/slices/snackbarSlice";
 import LocalStorage from "../services/local_storage";
 import axiosClient from "./../services/axios_client";
 import Urls from "./../services/urls";
@@ -33,12 +33,29 @@ function AuthPage() {
   const authStepIndex = useSelector(
     (state) => state.authStepReducer.authStepindex
   );
+  const [updateData, setupdateData] = useState({
+    name: "",
+    bio: "",
+    displayPicture: "",
+  });
+
+  const setupdateDataCallback = (data) => {
+    setupdateData(data);
+  };
+
   //signup steps
   const authStepsHash = {
     1: <Welcome />,
-    2: <AskName />,
-    3: <SelectAvatar />,
-    4: <AskBio />,
+    2: (
+      <AskName updateData={updateData} setupdateData={setupdateDataCallback} />
+    ),
+    3: (
+      <SelectAvatar
+        updateData={updateData}
+        setupdateData={setupdateDataCallback}
+      />
+    ),
+    4: <AskBio setupdateData={setupdateDataCallback} updateData={updateData} />,
   };
 
   useEffect(() => {
@@ -56,21 +73,18 @@ function AuthPage() {
       searchParams.delete("token");
       setSearchParams(searchParams);
 
-      //checking the authType if signup or login
-      if (authType === "signup") {
-        //if signup then setting the next signup step
-        dispatch(nextStep());
-      } else {
-        //saving the token in local storage
-        var token = LocalStorage.getRefreshToken();
-        //setting the token in the axios client
-        axiosClient.defaults.headers = {
-          Authorization: `Bearer ${token}`,
-        };
-        dispatch(setTitle("Logging you in..."));
-        dispatch(showLoader());
-        //getting the user data from the server
-        axiosClient.get(Urls.getUser).then((res) => {
+      //saving the token in local storage
+      var token = LocalStorage.getRefreshToken();
+      //setting the token in the axios client
+      axiosClient.defaults.headers = {
+        Authorization: `Bearer ${token}`,
+      };
+      dispatch(setTitle("Logging you in..."));
+      dispatch(showLoader());
+      //getting the user data from the server
+      axiosClient
+        .get(Urls.user)
+        .then((res) => {
           if (res.status === 200) {
             //if the user data is fetched successfully
             //then navigating to the home page
@@ -78,14 +92,34 @@ function AuthPage() {
             dispatch(hideLoader());
             //setting the user data in local storage
             LocalStorage.setUserData(res.data.user);
-            //setting the user data in the redux store
-            dispatch(setUser(res.data.user));
-            navigate("/home");
+            //add in update data
+            setupdateData({
+              name: res.data.user.name,
+              bio: res.data.user.bio,
+              displayPicture: res.data.user.displayPicture,
+            });
+
+            //checking the authType if signup or login
+            if (authType === "signup") {
+              //if signup then setting the next signup step
+              dispatch(nextStep());
+            } else {
+              dispatch(
+                showSnackbar({
+                  message: "Logged in successfully",
+                  type: "success",
+                })
+              );
+              //if login then navigating to the home page
+              navigate("/home");
+            }
           } else {
-            console.log("error", res);
+            throw new Error("Something went wrong");
           }
+        })
+        .catch((err) => {
+          console.log("error", err);
         });
-      }
     }
   }, []);
   return (
@@ -104,6 +138,7 @@ function AuthPage() {
           }}
         >
           <Box
+            className="back_button"
             onClick={() => {
               dispatch(previousStep());
             }}
@@ -115,7 +150,6 @@ function AuthPage() {
             <MdOutlineKeyboardArrowLeft size={25} />
           </Box>
           {authStepsHash[authStepIndex]}
-
           <Box
             className="dots"
             sx={{
@@ -144,7 +178,7 @@ function AuthPage() {
           </Box>
         </Box>
       </Box>
-      <ToastLoader />
+      <AppSnackbar />
     </Box>
   );
 }

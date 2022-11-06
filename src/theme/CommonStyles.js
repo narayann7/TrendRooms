@@ -64,6 +64,7 @@ const selectAvatarLable = {
   alignItems: "center",
   height: "100px",
   width: "100px",
+  border: "1px solid white",
   backgroundColor: "#212123",
   borderRadius: "50%",
   cursor: "pointer",
