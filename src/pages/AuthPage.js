@@ -58,10 +58,6 @@ function AuthPage() {
     4: <AskBio setupdateData={setupdateDataCallback} updateData={updateData} />,
   };
 
-  const testApi = async () => {
-    axiosClient.get(Urls.user);
-  };
-
   useEffect(() => {
     //getting the token and authType from the params
     let authType = searchParams.get("authType");
@@ -75,60 +71,54 @@ function AuthPage() {
         LocalStorage.setRefreshToken(refreshToken);
         LocalStorage.setAccessToken(accessToken);
 
-        //log
-        console.log("refreshToken: ", refreshToken);
-        console.log("accessToken: ", accessToken);
-
         //deleting the token from the params
         searchParams.delete("refreshToken");
         searchParams.delete("accessToken");
         searchParams.delete("authType");
         setSearchParams(searchParams);
 
-        // //setting the token in the axios client
-        // axiosClient.defaults.headers = {
-        //   Authorization: `Bearer ${token}`,
-        // };
-        // dispatch(setTitle("Logging you in..."));
-        // dispatch(showLoader());
-        // //getting the user data from the server
-        // axiosClient
-        //   .get(Urls.user)
-        //   .then((res) => {
-        //     if (res.status === 200) {
-        //       //if the user data is fetched successfully
-        //       //then navigating to the home page
-        //       console.log("res", res.data.user);
-        //       dispatch(hideLoader());
-        //       //setting the user data in local storage
-        //       LocalStorage.setUserData(res.data.user);
-        //       //add in update data
-        //       setupdateData({
-        //         name: res.data.user.name,
-        //         bio: res.data.user.bio,
-        //         displayPicture: res.data.user.displayPicture,
-        //       });
-        //       //checking the authType if signup or login
-        //       if (authType === "signup") {
-        //         //if signup then setting the next signup step
-        //         dispatch(nextStep());
-        //       } else {
-        //         dispatch(
-        //           showSnackbar({
-        //             message: "Logged in successfully",
-        //             type: "success",
-        //           })
-        //         );
-        //         //if login then navigating to the home page
-        //         navigate("/home");
-        //       }
-        //     } else {
-        //       throw new Error("Something went wrong");
-        //     }
-        //   })
-        //   .catch((err) => {
-        //     console.log("error", err);
-        //   });
+        dispatch(setTitle("Logging you in..."));
+        dispatch(showLoader());
+        //getting the user data from the server
+        axiosClient
+          .get(Urls.user)
+          .then((res) => {
+            console.log(res.data);
+
+            if (res.status === 200) {
+              //if the user data is fetched successfully
+              //then navigating to the home page
+
+              dispatch(hideLoader());
+              //setting the user data in local storage
+              LocalStorage.setUserData(res.data.responseDate);
+              //add in update data
+              setupdateData({
+                name: res.data.responseDate.name,
+                bio: res.data.responseDate.bio,
+                displayPicture: res.data.responseDate.displayPicture,
+              });
+              //checking the authType if signup or login
+              if (authType === "signup") {
+                //if signup then setting the next signup step
+                dispatch(nextStep());
+              } else {
+                dispatch(
+                  showSnackbar({
+                    message: "Logged in successfully",
+                    type: "success",
+                  })
+                );
+                //if login then navigating to the home page
+                navigate("/home");
+              }
+            } else {
+              throw new Error("Something went wrong");
+            }
+          })
+          .catch((err) => {
+            console.log("error", err);
+          });
       }
     } catch (error) {
       if (refreshToken && accessToken) {

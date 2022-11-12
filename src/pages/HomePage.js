@@ -2,12 +2,14 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { selectAvatarLable } from "../theme/CommonStyles";
 import { setUser, logout } from "../controllers/slices/userSlice";
 import { showSnackbar } from "../controllers/slices/snackbarSlice";
 import LocalStorage from "../services/localStorage";
 import AppSnackbar from "../components/AppSnackbar";
 import axiosClient from "../services/axiosClient";
 import Urls from "../services/urls";
+import Spacer from "../components/Spacer";
 
 function HomePage() {
   const userData = useSelector((state) => state.userReducer.user);
@@ -46,21 +48,48 @@ function HomePage() {
           width: "100vw",
         }}
       >
-        <div>{userData.email}</div>
-        <Button
-          onClick={logoutOnClick}
-          sx={{
-            color: "white",
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
+            height: "50vh",
+            width: "30vw",
+            borderRadius: "10px",
             backgroundColor: "#212123",
-            "&:hover": {
-              backgroundColor: "#212123",
-            },
-            marginTop: "15px",
           }}
         >
-          Logout
-        </Button>
-        <AppSnackbar />
+          <div>
+            <img
+              referrerPolicy="no-referrer"
+              style={selectAvatarLable}
+              height={100}
+              src={userData.displayPicture}
+              alt="select avatar"
+              loading="lazy"
+            />
+          </div>
+          <Spacer height={20} />
+          <div>{userData.name}</div>
+          <Spacer height={10} />
+          <div>{userData.email}</div>
+
+          <Button
+            onClick={logoutOnClick}
+            sx={{
+              color: "white",
+              backgroundColor: "#212123",
+              "&:hover": {
+                backgroundColor: "black",
+              },
+              marginTop: "15px",
+            }}
+          >
+            Logout
+          </Button>
+          <AppSnackbar />
+        </div>
       </div>
     </>
   );

@@ -7,6 +7,7 @@ import { FcGoogle } from "react-icons/fc";
 import { BsGithub } from "react-icons/bs";
 import { FaLinkedin } from "react-icons/fa";
 import Urls from "../../services/urls";
+import axiosClient from "./../../services/axiosClient";
 
 function Welcome() {
   return (
