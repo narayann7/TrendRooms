@@ -1,5 +1,5 @@
 import axios from "axios";
-import LocalStorage from "./local_storage";
+import LocalStorage from "./localStorage";
 
 const axiosClient = axios.create();
 

@@ -23,8 +23,8 @@ import {
   showLoader,
   showSnackbar,
 } from "./../controllers/slices/snackbarSlice";
-import LocalStorage from "../services/local_storage";
-import axiosClient from "./../services/axios_client";
+import LocalStorage from "../services/localStorage";
+import axiosClient from "../services/axiosClient";
 import Urls from "./../services/urls";
 function AuthPage() {
   const navigate = useNavigate();
@@ -58,68 +58,87 @@ function AuthPage() {
     4: <AskBio setupdateData={setupdateDataCallback} updateData={updateData} />,
   };
 
+  const testApi = async () => {
+    axiosClient.get(Urls.user);
+  };
+
   useEffect(() => {
     //getting the token and authType from the params
     let authType = searchParams.get("authType");
-    let refreshToken = searchParams.get("token");
+    let refreshToken = searchParams.get("refreshToken");
+    let accessToken = searchParams.get("accessToken");
 
-    //if the refreshToken is not null
-    if (refreshToken) {
-      //setting the token in the local storage
-      LocalStorage.setRefreshToken(refreshToken);
+    try {
+      //if the refreshToken is not null and length is greater than 200
+      if (refreshToken.length >= 200 && accessToken.length >= 200) {
+        //save the tokens in the local storage
+        LocalStorage.setRefreshToken(refreshToken);
+        LocalStorage.setAccessToken(accessToken);
 
-      //deleting the token from the params
-      searchParams.delete("authType");
-      searchParams.delete("token");
-      setSearchParams(searchParams);
+        //log
+        console.log("refreshToken: ", refreshToken);
+        console.log("accessToken: ", accessToken);
 
-      //saving the token in local storage
-      var token = LocalStorage.getRefreshToken();
-      //setting the token in the axios client
-      axiosClient.defaults.headers = {
-        Authorization: `Bearer ${token}`,
-      };
-      dispatch(setTitle("Logging you in..."));
-      dispatch(showLoader());
-      //getting the user data from the server
-      axiosClient
-        .get(Urls.user)
-        .then((res) => {
-          if (res.status === 200) {
-            //if the user data is fetched successfully
-            //then navigating to the home page
-            console.log("res", res.data.user);
-            dispatch(hideLoader());
-            //setting the user data in local storage
-            LocalStorage.setUserData(res.data.user);
-            //add in update data
-            setupdateData({
-              name: res.data.user.name,
-              bio: res.data.user.bio,
-              displayPicture: res.data.user.displayPicture,
-            });
+        //deleting the token from the params
+        searchParams.delete("refreshToken");
+        searchParams.delete("accessToken");
+        searchParams.delete("authType");
+        setSearchParams(searchParams);
 
-            //checking the authType if signup or login
-            if (authType === "signup") {
-              //if signup then setting the next signup step
-              dispatch(nextStep());
-            } else {
-              dispatch(
-                showSnackbar({
-                  message: "Logged in successfully",
-                  type: "success",
-                })
-              );
-              //if login then navigating to the home page
-              navigate("/home");
-            }
-          } else {
-            throw new Error("Something went wrong");
-          }
-        })
-        .catch((err) => {
-          console.log("error", err);
-        });
+        // //setting the token in the axios client
+        // axiosClient.defaults.headers = {
+        //   Authorization: `Bearer ${token}`,
+        // };
+        // dispatch(setTitle("Logging you in..."));
+        // dispatch(showLoader());
+        // //getting the user data from the server
+        // axiosClient
+        //   .get(Urls.user)
+        //   .then((res) => {
+        //     if (res.status === 200) {
+        //       //if the user data is fetched successfully
+        //       //then navigating to the home page
+        //       console.log("res", res.data.user);
+        //       dispatch(hideLoader());
+        //       //setting the user data in local storage
+        //       LocalStorage.setUserData(res.data.user);
+        //       //add in update data
+        //       setupdateData({
+        //         name: res.data.user.name,
+        //         bio: res.data.user.bio,
+        //         displayPicture: res.data.user.displayPicture,
+        //       });
+        //       //checking the authType if signup or login
+        //       if (authType === "signup") {
+        //         //if signup then setting the next signup step
+        //         dispatch(nextStep());
+        //       } else {
+        //         dispatch(
+        //           showSnackbar({
+        //             message: "Logged in successfully",
+        //             type: "success",
+        //           })
+        //         );
+        //         //if login then navigating to the home page
+        //         navigate("/home");
+        //       }
+        //     } else {
+        //       throw new Error("Something went wrong");
+        //     }
+        //   })
+        //   .catch((err) => {
+        //     console.log("error", err);
+        //   });
+      }
+    } catch (error) {
+      if (refreshToken && accessToken) {
+        dispatch(
+          showSnackbar({
+            message: "Something went wrong! Please try again later",
+            type: "error",
+          })
+        );
+      }
     }
   }, []);
   return (

@@ -8,7 +8,7 @@ import AuthPage from "./pages/AuthPage";
 import ErrorPage from "./pages/ErrorPage";
 import Test from "./pages/Test";
 import "./App.css";
-import LocalStorage from "./services/local_storage";
+import LocalStorage from "./services/localStorage";
 
 function App() {
   const token = LocalStorage.getRefreshToken();

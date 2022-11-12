@@ -1,13 +1,27 @@
-import CommonServices from "./common_services";
+import CommonServices from "./commonServices";
 
 class LocalStorage {
+  //get refresh token
   static getRefreshToken() {
-    var token = localStorage.getItem("refreshToken");
+    var token = localStorage.getItem(
+      CommonServices.Base64Encode("refreshToken")
+    );
     return token;
   }
   //set refresh token
   static setRefreshToken(token) {
-    localStorage.setItem("refreshToken", token);
+    localStorage.setItem(CommonServices.Base64Encode("refreshToken"), token);
+  }
+  //get access token
+  static getAccessToken() {
+    var token = localStorage.getItem(
+      CommonServices.Base64Encode("accessToken")
+    );
+    return token;
+  }
+  //set access token
+  static setAccessToken(token) {
+    localStorage.setItem(CommonServices.Base64Encode("accessToken"), token);
   }
   //set user data
   static setUserData(data) {

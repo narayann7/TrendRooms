@@ -4,9 +4,9 @@ import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { setUser, logout } from "../controllers/slices/userSlice";
 import { showSnackbar } from "../controllers/slices/snackbarSlice";
-import LocalStorage from "../services/local_storage";
+import LocalStorage from "../services/localStorage";
 import AppSnackbar from "../components/AppSnackbar";
-import axiosClient from "../services/axios_client";
+import axiosClient from "../services/axiosClient";
 import Urls from "../services/urls";
 
 function HomePage() {
