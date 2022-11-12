@@ -1,9 +1,12 @@
 import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
+import LocalStorage from "../services/localStorage";
 
 function PublicRoute() {
-  const token = localStorage.getItem("refreshToken");
-  return token == null || !(token.length >= 30) ? (
+  var refreshToken = LocalStorage.getRefreshToken();
+  var accessToken = LocalStorage.getAccessToken();
+  return (refreshToken == null || !(refreshToken.length >= 200)) &&
+    (accessToken == null || !(accessToken.length >= 200)) ? (
     <Outlet />
   ) : (
     <Navigate to={"/home"} replace />

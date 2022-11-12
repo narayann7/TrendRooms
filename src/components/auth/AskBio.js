@@ -16,8 +16,8 @@ import {
 } from "./../../controllers/slices/snackbarSlice";
 import { makeItInitial } from "./../../controllers/slices/authStepSlice";
 import Urls from "../../services/urls";
-import axiosClient from "../../services/axios_client";
-import LocalStorage from "../../services/local_storage";
+import axiosClient from "../../services/axiosClient";
+import LocalStorage from "../../services/localStorage";
 import { useNavigate } from "react-router-dom";
 
 function AskBio({ updateData, setupdateData }) {
