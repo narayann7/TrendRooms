@@ -1,35 +1,13 @@
-# => Build container
-FROM node:alpine as builder
+FROM node:14.9.0 AS build-step
+
 WORKDIR /app
-COPY package.json .
-COPY yarn.lock .
-RUN yarn
+COPY package.json package-lock.json ./
+RUN npm install
+ENV REACT_APP_SERVER_BASE_URL=http://ec2-3-110-50-55.ap-south-1.compute.amazonaws.com:5000
+ENV REACT_APP_BASE_URL=http://ec2-3-110-50-55.ap-south-1.compute.amazonaws.com:3000
 COPY . .
-RUN yarn build
+RUN npm run build
 
-# => Run container
-FROM nginx:1.15.2-alpine
-
-# Nginx config
-RUN rm -rf /etc/nginx/conf.d
-COPY conf /etc/nginx
-
-# Static build
-COPY --from=builder /app/build /usr/share/nginx/html/
-
-# Default port exposure
-EXPOSE 80
-
-# Copy .env file and shell script to container
-WORKDIR /usr/share/nginx/html
-COPY ./env.sh .
-COPY .env .
-
-# Add bash
-RUN apk add --no-cache bash
-
-# Make our shell script executable
-RUN chmod +x env.sh
-
-# Start Nginx server
-CMD ["/bin/bash", "-c", "/usr/share/nginx/html/env.sh && nginx -g \"daemon off;\""]
+FROM nginx:1.18-alpine
+COPY nginx.conf /etc/nginx/nginx.conf
+COPY --from=build-step /app/build /frontend/build

@@ -3,7 +3,7 @@ import LocalStorage from "./localStorage";
 
 const axiosClient = axios.create();
 
-axiosClient.defaults.baseURL = window._env_.SERVER_BASE_URL;
+axiosClient.defaults.baseURL = process.env.REACT_APP_SERVER_BASE_URL;
 
 axiosClient.defaults.headers = {
   "Content-Type": "application/json",
