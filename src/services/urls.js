@@ -1,6 +1,6 @@
 class Urls {
-  static serverBaseUrl = process.env.REACT_APP_SERVER_BASE_URL;
-  static clientBaseUrl = process.env.REACT_APP_BASE_URL;
+  static serverBaseUrl = window._env_.SERVER_BASE_URL;
+  static clientBaseUrl = window._env_.BASE_URL;
   static loginWithGoogleUrl = `${Urls.serverBaseUrl}/api/auth/google`;
   static loginWithGithubUrl = `${Urls.serverBaseUrl}/api/auth/github`;
   static loginWithLinkedinUrl = `${Urls.serverBaseUrl}/api/auth/linkedin`;
