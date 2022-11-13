@@ -35,11 +35,6 @@ function AskBio({ updateData, setupdateData }) {
     bio = bio.replace(/\s+/g, " ");
     setupdateData({ ...updateData, bio: bio });
     if (!isLoading) {
-      var token = LocalStorage.getRefreshToken();
-      //setting the token in the axios client
-      axiosClient.defaults.headers = {
-        Authorization: `Bearer ${token}`,
-      };
       dispatch(showLoader());
       axiosClient
         .put(Urls.user, {
@@ -50,7 +45,7 @@ function AskBio({ updateData, setupdateData }) {
         .then((res) => {
           if (res.status === 200) {
             dispatch(hideLoader());
-            LocalStorage.setUserData(res.data.user);
+            LocalStorage.setUserData(res.data.responseDate);
             dispatch(makeItInitial());
             navigate("/home", {
               replace: true,
