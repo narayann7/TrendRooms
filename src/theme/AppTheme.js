@@ -4,6 +4,9 @@ const AppTheme = createTheme({
     primary: {
       main: "#212123",
     },
+    secondary: {
+      main: "#4d4365",
+    },
   },
   typography: {
     fontFamily: `"Poppins","Sen"`,
