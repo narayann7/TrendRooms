@@ -47,6 +47,12 @@ function AskBio({ updateData, setupdateData }) {
             dispatch(hideLoader());
             LocalStorage.setUserData(res.data.responseDate);
             dispatch(makeItInitial());
+            dispatch(
+              showSnackbar({
+                message: "user updated successfully",
+                type: "success",
+              })
+            );
             navigate("/home", {
               replace: true,
             });

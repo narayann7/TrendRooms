@@ -9,6 +9,8 @@ import ErrorPage from "./pages/ErrorPage";
 import Test from "./pages/Test";
 import "./App.css";
 import LocalStorage from "./services/localStorage";
+import Header from "./components/Header";
+import Rooms from "./components/home/Rooms";
 
 function App() {
   const token = LocalStorage.getRefreshToken();
@@ -23,7 +25,10 @@ function App() {
       </Route>
 
       <Route element={<ProtectedRoute />}>
-        <Route path="home" element={<HomePage />} />
+        <Route path="home" element={<HomePage />}>
+          <Route path="" element={<Rooms />} />
+          <Route path=":id" element={<Test />} />
+        </Route>
       </Route>
       <Route path="/test" element={<Test />} />
       <Route path="*" element={<ErrorPage />} />
