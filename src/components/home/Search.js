@@ -12,7 +12,10 @@ function Search() {
         ...center_row,
         paddingLeft: "80px",
         paddingRight: "100px",
+
         paddingTop: "20px",
+        paddingBottom: "10px",
+
         justifyContent: "space-between",
       }}
     >
