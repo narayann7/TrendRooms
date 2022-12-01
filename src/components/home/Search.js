@@ -85,7 +85,7 @@ function Search() {
               },
             }}
           >
-            {" room"}
+            {"Start a room"}
           </Text>
         </Box>
         <Spacer width="5px" />
