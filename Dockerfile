@@ -3,8 +3,8 @@ FROM node:14.9.0 AS build-step
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm install
-ENV REACT_APP_SERVER_BASE_URL=http://trendrooms.crazeops.tech:5000
-ENV REACT_APP_BASE_URL=http://trendrooms.crazeops.tech
+ENV REACT_APP_SERVER_BASE_URL=http://trendrooms.crazeops.tech:32121
+ENV REACT_APP_BASE_URL=http://trendrooms.crazeops.tech:30000
 COPY . .
 RUN npm run build
 
