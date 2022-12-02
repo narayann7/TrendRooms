@@ -119,8 +119,8 @@ function Header() {
           >
             <MenuItem
               onClick={() => {
-                setopenProfile(true);
-                handleClose();
+                // setopenProfile(true);
+                // handleClose();
               }}
             >
               Profile
