@@ -67,37 +67,26 @@ function Rooms() {
   const navigate = useNavigate();
 
   return (
-    <div
-    // onClick={() => {
-    //   navigate("/home/1", {
-    //     replace: true,
-    //   });
-    // }}
-    >
+    <div>
       <Search />
-      <div
+      <Grid
         style={{
-          height: "80vh",
-          width: "100vw",
           paddingLeft: "80px",
           paddingRight: "100px",
-          paddingTop: "200px",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          overflowY: "scroll",
+          paddingTop: "20px",
+          paddingBottom: "20px",
         }}
+        container
+        spacing={2}
       >
-        <Grid container spacing={2}>
-          {fakeData.map((room) => {
-            return (
-              <Grid item xs={12} sm={6} md={4} lg={3}>
-                <RoomPreview room_name={room.name} />
-              </Grid>
-            );
-          })}
-        </Grid>
-      </div>
+        {fakeData.map((room) => {
+          return (
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <RoomPreview room_name={room.name} />
+            </Grid>
+          );
+        })}
+      </Grid>
     </div>
   );
 }

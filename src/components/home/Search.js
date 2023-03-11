@@ -21,7 +21,7 @@ function Search() {
     >
       <div style={center_row}>
         <div>
-          <Text variant="h6">{"All Treanding Rooms"}</Text>
+          <Text variant="h6">{"All Treanding Posts"}</Text>
         </div>
         <Spacer width="20px" />
         <Box
@@ -52,7 +52,7 @@ function Search() {
               }
             }}
             type="text"
-            placeholder="search rooms"
+            placeholder="search Posts"
             sx={{
               color: "white",
             }}
@@ -85,7 +85,7 @@ function Search() {
               },
             }}
           >
-            {"Start a room"}
+            {"Create Post"}
           </Text>
         </Box>
         <Spacer width="5px" />

@@ -87,7 +87,7 @@ function Header() {
         borderBottom: "2.5px solid #212123",
       }}
     >
-      <Text variant="h5">TrendRooms🔮</Text>
+      <Text variant="h5">TrendPosts🔮</Text>
 
       <div style={spaceAround}>
         <Text variant="h6">{userData.name}</Text>
